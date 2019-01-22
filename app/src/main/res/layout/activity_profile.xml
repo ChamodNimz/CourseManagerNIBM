@@ -116,8 +116,8 @@
         android:id="@+id/textView8"
         android:layout_width="262dp"
         android:layout_height="22dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
         android:text="Higher Diploma In Software Engineering"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent" />
