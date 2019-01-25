@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,6 +40,7 @@ public class Results extends AppCompatActivity {
     ArrayAdapter adapter;
     TextView textView;
     ButtonRectangle btnTrack;
+    private String resultResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +68,7 @@ public class Results extends AppCompatActivity {
                     public void onResponse(String response) {
                         resultArray = new ArrayList<>();
                         String row=null;
+                        resultResponse = response;
                         // Display the first 500 characters of the response string.
                         try{
                             JSONArray jsonArray = new JSONArray(response);
@@ -77,7 +78,6 @@ public class Results extends AppCompatActivity {
                                 row+="  "+ jo.getString("result");
                                 resultArray.add(row);
                             }
-                            Log.e("response:",response);
 
                             adapter = new ArrayAdapter<String>(Results.this,R.layout.row,R.id.row,resultArray);
                             resultList.setAdapter(adapter);
@@ -110,7 +110,9 @@ public class Results extends AppCompatActivity {
         btnTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Results.this,ResultTrack.class));
+                Intent intent= new Intent(Results.this,ResultTrack.class);
+                intent.putExtra("results",resultResponse);
+                startActivity(intent);
             }
         });
     }

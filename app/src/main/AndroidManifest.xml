@@ -39,7 +39,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ResultTrack"></activity>
+        <activity android:name=".ResultTrack" />
+        <activity android:name=".SignUp"></activity>
     </application>
 
 </manifest>
