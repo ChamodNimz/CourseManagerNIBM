@@ -1,6 +1,8 @@
 package com.example.chamod.coursemanagernibm;
 
-public class UserProfile {
+import java.io.Serializable;
+
+public class UserProfile implements Serializable {
 
     private String course_name;
     private String email;
@@ -8,6 +10,15 @@ public class UserProfile {
     private String first_name;
     private String last_name;
     private String index;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getCourse_name() {
         return course_name;

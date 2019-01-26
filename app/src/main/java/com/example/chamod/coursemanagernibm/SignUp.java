@@ -81,7 +81,10 @@ public class SignUp extends AppCompatActivity {
                         new android.os.Handler().postDelayed(
                                 new Runnable() {
                                     public void run() {
-                                        startActivity(new Intent(SignUp.this,Home.class));
+                                        Intent intent = new Intent(SignUp.this,Home.class);// New activity
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        finish(); // Call once you redirect to another activity
                                     }
                                 },
                                 5000);

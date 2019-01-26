@@ -12,11 +12,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -39,8 +42,9 @@ public class Results extends AppCompatActivity {
     private ArrayList<String> resultArray;
     ArrayAdapter adapter;
     TextView textView;
-    ButtonRectangle btnTrack;
+    ButtonRectangle btnTrack,btnGPA;
     private String resultResponse;
+    UserProfile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +60,14 @@ public class Results extends AppCompatActivity {
         resultList = findViewById(R.id.resultList);
         textView = findViewById(R.id.textView);
         btnTrack = findViewById(R.id.btnTrack);
+        btnGPA = findViewById(R.id.btnGpa);
+
+        profile = new UserProfile();
+        profile = (UserProfile) getIntent().getSerializableExtra("profile");
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://nibm-api.herokuapp.com/web/api/results/cohdse181f-008";
+        String url ="https://nibm-api.herokuapp.com/web/api/results/"+profile.getIndex();
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -97,7 +105,7 @@ public class Results extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNDcyZTdkZDA3M2Y0MDAxNzIzNDAzZSIsImVtYWlsIjoiY2hhbW9kQHlhaG9vLmNvbSIsImlhdCI6MTU0ODE2OTM5MCwiZXhwIjoxNTQ4Nzc0MTkwfQ.2YfuWLNO7OnXlHMN4kjCVMv94fpfY6CwGS7Wi7GCm8o");
+                params.put("Authorization", profile.getToken());
                 return params;
             }
 
@@ -113,6 +121,50 @@ public class Results extends AppCompatActivity {
                 Intent intent= new Intent(Results.this,ResultTrack.class);
                 intent.putExtra("results",resultResponse);
                 startActivity(intent);
+            }
+        });
+
+        // GPA view and suggestions
+        btnGPA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONArray array = new JSONArray();
+                try {
+                    JSONObject postObj = new JSONObject();
+                    JSONArray jsonArray = new JSONArray(resultResponse);
+
+                    for(int i=0;i<jsonArray.length();i++){
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        object.put("course_name",profile.getCourse_name());
+                        array.put((JSONObject)object);
+                    }
+                    postObj.put("modules",array);
+                    Toast.makeText(Results.this, postObj.toString(), Toast.LENGTH_SHORT).show();
+
+                    // send POST req
+                    // Instantiate the RequestQueue.
+                    String url = "https://nibm-api.herokuapp.com/web/api/gpa";
+                    RequestQueue q = Volley.newRequestQueue(Results.this);
+                    JsonObjectRequest jobReq = new JsonObjectRequest(Request.Method.POST, url, postObj,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject jsonObject) {
+                                    Log.e("GPA : ",jsonObject.toString());
+                                    startActivity(new Intent(Results.this,Gpa.class).putExtra("data",jsonObject.toString()));
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+
+                                }
+                            });
+
+                    q.add(jobReq);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
