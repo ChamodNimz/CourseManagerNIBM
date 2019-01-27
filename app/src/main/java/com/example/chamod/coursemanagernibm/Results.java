@@ -139,7 +139,7 @@ public class Results extends AppCompatActivity {
                         array.put((JSONObject)object);
                     }
                     postObj.put("modules",array);
-                    Toast.makeText(Results.this, postObj.toString(), Toast.LENGTH_SHORT).show();
+
 
                     // send POST req
                     // Instantiate the RequestQueue.

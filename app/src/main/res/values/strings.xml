@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">CourseManagerNIBM</string>
+    <string-array name="courses">
+        <item>diploma in software engineering</item>
+        <item>higher diploma in software engineering</item>
+        <item>diploma in networking</item>
+        <item>diploma in computer systems</item>
+    </string-array>
 </resources>

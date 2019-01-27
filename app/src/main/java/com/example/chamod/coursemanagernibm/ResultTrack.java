@@ -38,6 +38,7 @@ public class ResultTrack extends AppCompatActivity {
 
         // Get results from previous activity
         results = getIntent().getStringExtra("results");
+
         parseResults(); // parse JSON from response
         barchart = findViewById(R.id.chart);
         barchart.setDrawBarShadow(false);
@@ -61,7 +62,7 @@ public class ResultTrack extends AppCompatActivity {
         barDataSet.setColors(getResources().getColor(R.color.colorPrimary));
 
         BarData data = new BarData(barDataSet);
-        data.setBarWidth(0.5f);
+        data.setBarWidth(0.5f); // to set the bar size
 
         barchart.setData(data);
 

@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,7 +24,7 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class SignUp extends AppCompatActivity {
+public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     MaterialEditText
             txtFirstName,
@@ -33,7 +36,10 @@ public class SignUp extends AppCompatActivity {
             txtCourseName;
     ButtonRectangle btnSignUp;
     SweetAlertDialog pDialog= null;
+    Spinner drpCourses;
     private String url = "";
+    UserProfile userProfile = new UserProfile();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +47,8 @@ public class SignUp extends AppCompatActivity {
 
         initialize();
         pDialog = new SweetAlertDialog(SignUp.this, SweetAlertDialog.PROGRESS_TYPE);
+
+        // sign up button click
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +126,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     public void initialize(){
-        txtCourseName = findViewById(R.id.txtCourseName);
+       // txtCourseName = findViewById(R.id.txtCourseName);
         txtFirstName = findViewById(R.id.txtFirstName);
         txtLastName = findViewById(R.id.txtLastName);
         txtEmail = findViewById(R.id.txtEmail);
@@ -126,12 +134,17 @@ public class SignUp extends AppCompatActivity {
         txtRegPassword  = findViewById(R.id.txtRegPassword);
         txtRegPasswordRecheck = findViewById(R.id.txtRegPasswordRecheck);
         btnSignUp = findViewById(R.id.btnSignUp);
+        drpCourses = findViewById(R.id.drpCourses);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.courses,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        drpCourses.setAdapter(adapter);
+        drpCourses.setOnItemSelectedListener(this);
+
     }
 
     public UserProfile getRegistryDetails(){
-       UserProfile userProfile = new UserProfile();
 
-       userProfile.setCourse_name(txtCourseName.getText().toString());
+       //userProfile.setCourse_name(txtCourseName.getText().toString());
        userProfile.setEmail(txtEmail.getText().toString());
        userProfile.setPassword(txtRegPassword.getText().toString());
        userProfile.setFirst_name(txtFirstName.getText().toString());
@@ -141,6 +154,16 @@ public class SignUp extends AppCompatActivity {
        return userProfile;
     }
 
-    // sign up button click
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        userProfile.setCourse_name(parent.getItemAtPosition(position).toString());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+
 
 }

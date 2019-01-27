@@ -17,7 +17,9 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         profile = new UserProfile();
+        // get user profile object and initialize it
         profile = (UserProfile) getIntent().getSerializableExtra("profile");
+
 
         lblCourseName = findViewById(R.id.lblCourseName);
         lblEmail = findViewById(R.id.lblEmail);

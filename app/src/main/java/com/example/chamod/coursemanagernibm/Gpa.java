@@ -29,7 +29,7 @@ public class Gpa extends AppCompatActivity {
             JSONArray array = jsonResponse.getJSONArray("suggestions");
             if(array.length()!=0){
                 for(int i=0; i<array.length();i++){
-                    suggestions+=array.getString(i)+" \n";
+                    suggestions+="#"+array.getString(i)+"\n";
                 }
                 lblSuggestions.setText(suggestions);
             }
